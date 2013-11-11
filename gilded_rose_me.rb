@@ -1,11 +1,11 @@
 class GenericItemUpdater
   def self.update(item)
-    update_quality(item)
+    update_quality(item) # adjust quality before adjusting sell-in
     update_sell_in(item)
   end
   def self.update_quality(item)
     if item.sell_in <= 0
-      adjust(item, -2)
+      adjust(item, -2) # passed sell by date, quality degrades by 2
     else
       adjust(item, -1)
     end
@@ -17,8 +17,8 @@ class GenericItemUpdater
 
   def self.adjust(item, amount)
     item.quality += amount
-    item.quality = 50 if item.quality > 50
-    item.quality = 0 if item.quality < 0
+    item.quality = 50 if item.quality > 50  # quality never goes above 50
+    item.quality = 0 if item.quality < 0    # quality can't go below 0
   end
 end
 class AgedBrieUpdater < GenericItemUpdater
